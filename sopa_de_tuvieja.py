@@ -1,11 +1,18 @@
 from random import *
 
 
-#Inicializa el tablero. kpo
+'''
+Inicia el tablero, dependiendo de la longitud de la palabra mas larga, da un margen de 6 o 7 de ancho
+Devuelve el tablero y la longitud de la fila.
+'''
 def init_tablero(longitud):
-	f = longitud + randint(2,10)
-	return ((["-"] * pow(f,2)), f)
+	if (longitud%2==0): longitud += 6
+	else: longitud += 7
+	return ((["-"] * pow(longitud,2)), longitud)
 
+'''
+Retorna el numero de caracteres de la palabra con mas caracteres de la lista
+'''
 def maximo(lista):
 	n=i=0
 	for i in range(0,len(lista)):
@@ -13,25 +20,71 @@ def maximo(lista):
 			n = len(lista[i])
 	return n
 
-#if sepasa then true else false
-def sepasa?(ori,pos,lon):
-	if:
-	elif:
+'''
+Si la palabra es horizontal solo basta con sumarle a n la longitud del string
+si casa empezase en el casillero 7 de un tablero 5x5 tendriamos que 
+c = n + 0 = 7
+a = n + 1 = 8
+s = n + 2 = 9
+a = n + 3 = 10
+
+posFin = n + len(palabra) - 1 <ya que se cuenta la primera posicion como n>
+
+La formula para calcular el vertical creo que es posFin= len(plabra)*margen + (posIni - margen)
+Entonces si, por ejemplo, casa empezase en la posición 8 de un tablero 5x5
+tendria las siguientes posiciones
+c = 1*5 + 3 = 8
+a = 2*5 + 3 = 13
+s = 3*5 + 3 = 18
+a = 4*5 + 3 = 23
+que se corresponden con la realidad para una palabra vertical
+Como se ve son todos multiplos de la longitud del tablero mas un offset, en este caso 3
+ya que el tablero era de 5x5.
+'''
+def sepasa?(ori,posIni,lon,margen_tablero):
+	margen = calc_margen_actual(margen_tablero)
+	if(ori == "Horizontal"):
+		if(posIni + lon - 1 > margen):
+			return True
+	elif(ori == "Vertical"):
+		posF_vert = lon*margen +(posIni - margen)
+		if(posF_vert > margen):
+			return True
+	elif(ori == "Diagonal Sup")
 	else:
+	return false
 
 def sopa_de_letras(lista):
 	while lista!=[] :
 		tablero = init_tablero(maximo(lista))
-		ori = choice("Vertical","Horizontal","Diagonal")
-		pos = randint(0, len(tablero[0])
+		ori = choice("Vertical","Horizontal","Diagonal Sup","Diagonal Inf")
+		pos = randint(0, len(tablero[0]))
 		palabra = choice(lista)
+		sen = choice("+","-")
+
+		if(sen=="-"):
+			palabra = inv(palabra)
+
 		if(ori == "Horizontal"):
 			while sepasa?(ori, pos, len(palabra)):
-				pos = randint(0, len(tablero[0])
-			check
-			
+				pos = randint(0, len(tablero[0]))
+			poner_palabra(ori, pos, palabra, tablero)
+
 		elif(ori == "Vertical"):
+			while sepasa?(ori, pos, len(palabra)):
+				pos = randint(0, len(tablero[0]))
+			poner_palabra(ori, pos, palabra, tablero)
+
+		elif(ori == "Diagonal Inf"):
+			while sepasa?(ori, pos, len(palabra)):
+				pos = randint(0, len(tablero[0]))
+			poner_palabra(ori, pos, palabra, tablero)
+
 		else:
+			while sepasa?(ori, pos, len(palabra)):
+				pos = randint(0, len(tablero[0]))
+			poner_palabra(ori, pos, palabra, tablero)
+
 		lista = [elemento for elemento in lista if not (elemento == palabra)]
 		
 
