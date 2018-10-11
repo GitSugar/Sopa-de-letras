@@ -1,4 +1,59 @@
+'''
+Manejo de Archivos en Py3
+
+Archivos de texto .txt
+
+Abrir
+------
+string string -> file
+open(<ruta delarchivo>, <r/r+/w/w+/a/a+>) <read, write, append>
+
+archivo = open("hola.text", "r") <abre el hola.txt en lectura>
+
+Para crear un archivo basta con abrirlo en modo escritura cuando el archivo no existe
+
+Leer
+-----
+
+[metodo 1: Read]
+number -> string
+archivo.read(n) <lee n bytes del archivo en cuestion>
+archivo.read(5) <lee 5 caracteres del archivo y se queda en esa posicion>
+
+[metodo 2: readline]
+void -> string
+archivo.readline <lee hasta un salto de linea (incluido)>
+
+[metodo 3: readlines]
+void -> string
+archivo.readlines <devuelve todas las lineas del archivo>
+
+[metodo 4: recomendado por la comunidad (file in for)]
+
+for line in archivo <archivo se puede convertir a lista haciendo list(archivo)>
+    print line      <imprime las lineas del archivo separado por 1 espacio>
+
+
+Escribir
+--------
+open("hola2.txt", "w")
+
+string -> Number
+archivo.write(<string a añadir>)
+
+
+Cerrar
+------
+archivo.close() <cierra el archivo para terminarde escribirlo>
+
+archivo.closed <True si esta cerrado y False sino>
+
+----
+Para resetear el puntero de lectura basta con cerrar y abrir el archivo 
+xdddddd
+'''
 from random import *
+from math import *
 
 
 '''
@@ -8,7 +63,7 @@ Devuelve el tablero y la longitud de la fila.
 def init_tablero(longitud):
 	if (longitud%2==0): longitud += 6
 	else: longitud += 7
-	return ((["-"] * pow(longitud,2)), longitud)
+	return ((["-"] * longitud ** 2), longitud)
 
 '''
 Retorna el numero de caracteres de la palabra con mas caracteres de la lista
@@ -19,6 +74,11 @@ def maximo(lista):
 		if len(lista[i])>n:
 			n = len(lista[i])
 	return n
+
+def calc_margen_actual(margen, posicion):
+    return ((position // margen)+1)*margen
+    
+    
 
 '''
 Si la palabra es horizontal solo basta con sumarle a n la longitud del string
@@ -41,18 +101,22 @@ que se corresponden con la realidad para una palabra vertical
 Como se ve son todos multiplos de la longitud del tablero mas un offset, en este caso 3
 ya que el tablero era de 5x5.
 '''
-def sepasa?(ori,posIni,lon,margen_tablero):
+def sepasa(ori,posIni,lon,margen_tablero):
 	margen = calc_margen_actual(margen_tablero)
 	if(ori == "Horizontal"):
 		if(posIni + lon - 1 > margen):
 			return True
 	elif(ori == "Vertical"):
-		posF_vert = lon*margen +(posIni - margen)
-		if(posF_vert > margen):
+		posF_vert = lon*margen_tablero +(posIni - margen)
+		if(posF_vert > margen or posF_vert > margen_tablero ** 2):
 			return True
-	elif(ori == "Diagonal Sup")
+	elif(ori == "Diagonal Inf"):
+        posF_DiagInf = (posIni + (lon-1)*(margen_tablero+1)
+        if(posF_DiagInf > margen or posF_DiagInf > margen_tablero ** 2):
+            return True
 	else:
-	return false
+        posF_DiagSup = posIni - (margen_tablero -1) * lon 
+	return False
 
 def sopa_de_letras(lista):
 	while lista!=[] :
@@ -66,22 +130,22 @@ def sopa_de_letras(lista):
 			palabra = inv(palabra)
 
 		if(ori == "Horizontal"):
-			while sepasa?(ori, pos, len(palabra)):
+			while sepasa(ori, pos, len(palabra)):
 				pos = randint(0, len(tablero[0]))
 			poner_palabra(ori, pos, palabra, tablero)
 
 		elif(ori == "Vertical"):
-			while sepasa?(ori, pos, len(palabra)):
+			while sepasa(ori, pos, len(palabra)):
 				pos = randint(0, len(tablero[0]))
 			poner_palabra(ori, pos, palabra, tablero)
 
 		elif(ori == "Diagonal Inf"):
-			while sepasa?(ori, pos, len(palabra)):
+			while sepasa(ori, pos, len(palabra)):
 				pos = randint(0, len(tablero[0]))
 			poner_palabra(ori, pos, palabra, tablero)
 
 		else:
-			while sepasa?(ori, pos, len(palabra)):
+			while sepasa(ori, pos, len(palabra)):
 				pos = randint(0, len(tablero[0]))
 			poner_palabra(ori, pos, palabra, tablero)
 
